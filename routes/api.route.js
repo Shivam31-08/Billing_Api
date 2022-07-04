@@ -7,6 +7,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const checkAuth = require("../middleware/check-auth");
 
+const total = require("../middleware/total")
+
 // get Products 
 router.get("/products",checkAuth,async(req,res,next)=>{
   try {
@@ -85,7 +87,7 @@ router.get("/orders",async(req,res,next)=>{
 })
 
 // create a order
-router.post('/orders', async (req, res, next) => {
+router.post('/orders',total.total_Sum, async (req, res, next) => {
   try {
     const order = await prisma.order.create({
       data: req.body
@@ -103,6 +105,7 @@ router.get('/orders/:id', async (req, res, next) => {
     const order = await prisma.order.findUnique({
      where : {id:Number(id)}
     })
+    const total = await prisma.product.findUnique
     res.json(order)
   } catch (error) {
     next(error);
