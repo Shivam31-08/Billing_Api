@@ -11,17 +11,17 @@ datasource db {
 }
 
 model Product {
-  id       Int      @id @default(autoincrement())
-  name     String
-  price    Int
-  createAt DateTime
-  order    Order?   @relation(fields: [orderId], references: [id])
-  orderId  Int?
+  id        Int      @id @default(autoincrement())
+  name      String
+  price     Int
+  createdAt DateTime @default(now())
+  Order     Order[]
 }
 
 model Order {
-  id Int @id
-  products   Product[]
+  id         Int       @id
+  products   Product @relation(fields: [productId], references: [id])
+  productId  Int
   customerId User      @relation(fields: [userId], references: [id])
   userId     Int
 }
@@ -30,5 +30,5 @@ model User {
   id       Int     @id @default(autoincrement())
   email    String  @unique
   password String
-  Order    Order[]
+  order    Order[]
 }

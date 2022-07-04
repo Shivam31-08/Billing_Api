@@ -2,15 +2,78 @@ const router = require('express').Router();
 
 const {PrismaClient} = require("@prisma/client")
 const prisma = new PrismaClient()
-// Create Products 
-router.get("/products",async(res,req,next)=>{
-  
+// get Products 
+router.get("/products",async(req,res,next)=>{
+  try {
+    const products = await prisma.product.findMany({})
+    res.json(products)
+  } catch (error) {
+    next(error)
+  }
 })
 
+// create a product
+router.post('/products', async (req, res, next) => {
+  try {
+    const product = await prisma.product.create({
+      data: req.body
+    })
+    res.json(product)
+  } catch (error) {
+    next(error);
+  }
+});
+
+// get a specific product
+router.get('/products/:id', async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const product = await prisma.product.findUnique({
+     where : {id:Number(id)}
+    })
+    res.json(product)
+  } catch (error) {
+    next(error);
+  }
+});
+
+// update a product
+router.patch('/products/:id', async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const product = await prisma.product.update({
+      where : {
+        id : Number(id)
+      },
+      data: req.body
+    })
+    res.json(product)
+  } catch (error) {
+    next(error);
+  }
+});
+
+// delete a product
+router.delete('/products/:id', async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const product = await prisma.product.delete({
+      where: {
+        id:Number(id)
+      }
+    })
+    res.json("Delted the product")
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Orders
 
 router.get('/', async (req, res, next) => {
   res.send({ message: 'Ok api is working 🚀' });
-});
+});  
+
 
 router.get('/user/signup',async(req,res,next)=>{
   try{
