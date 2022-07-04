@@ -74,7 +74,7 @@ router.delete('/products/:id', async (req, res, next) => {
 });
 
 // Orders
-// get Products 
+// get orders 
 router.get("/orders",async(req,res,next)=>{
   try {
     const orders = await prisma.order.findMany({})
