@@ -97,10 +97,10 @@ router.post('/orders', async (req, res, next) => {
 });
 
 // get a specific order
-router.get('/order/:id', async (req, res, next) => {
+router.get('/orders/:id', async (req, res, next) => {
   try {
     const id = req.params.id;
-    const order = await prisma.product.findUnique({
+    const order = await prisma.order.findUnique({
      where : {id:Number(id)}
     })
     res.json(order)
