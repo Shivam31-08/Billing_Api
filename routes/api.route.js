@@ -29,7 +29,8 @@ router.delete('/products/:id',productRoutes.products_Delete );
 router.get("/orders",orderRoutes.orders_getAll)
 
 // create a order
-router.post('/orders',total.total_Sum, orderRoutes.orders_create);
+// router.post('/orders',total.total_Sum, orderRoutes.orders_create);
+router.post('/orders', orderRoutes.orders_create);
 
 // get a specific order
 router.get('/orders/:id', orderRoutes.orders_getOrder);

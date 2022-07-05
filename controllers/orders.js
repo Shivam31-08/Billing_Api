@@ -13,10 +13,26 @@ exports.orders_getAll=async(req,res,next)=>{
 
 exports.orders_create = async (req, res, next) => {
     try {
-      const order = await prisma.order.create({
-        data: req.body
+      let sum = 0;
+      const findProduct = prisma.product.findUnique({
+        where : {
+          id : req.body.productId
+        }
       })
-      res.json(order)
+      .then(prod => {
+        if(!prod)
+        {
+          return res.json("Product not available currently!")
+        }
+        sum = prod.price * req.body.quantity;
+      })
+      const order =  await prisma.order.create({
+          data: req.body
+        })
+        res.json({
+          order : order,
+          Total : sum
+      })
     } catch (error) {
       next(error);
     }
